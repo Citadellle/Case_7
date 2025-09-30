@@ -163,9 +163,7 @@ def main():
     for url in tqdm(urls_goods):
         print(url)
         goods_data.append(product_data(url))
-    
-    for i in goods_data:
-        print(i)
+    output(goods_data)
     
 
 if __name__ == '__main__':
