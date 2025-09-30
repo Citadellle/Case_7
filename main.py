@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+from ru_local import *
 
 
 def link():
@@ -18,3 +19,17 @@ def link():
         url_list.append(url)
 
     return url_list
+
+def output(goods_data):
+    with open('output.txt','w',encoding='utf-8') as catalog:
+        for product in goods_data:
+            catalog.write(INDENT)
+            catalog.write(product[NAME])
+            catalog.write(f'\n{ARTICLE}: {product[ARTICLE]}\n')
+            catalog.write(f'{VIEW}: {product[VIEW]}\n')
+            catalog.write(f'{SEASON}: {product[SEASON]}\n')
+            catalog.write(f'{SIZES}: {product[SIZES]}\n')
+            catalog.write(f'{PRICE}: {product[PRICE]}\n')
+            catalog.write(f'{COLOR}: {product[COLOR]}\n')
+            catalog.write(f'{UP_MATERIAL}: {product[UP_MATERIAL]}\n')
+            catalog.write(f'{COUNTRY}: {product[COUNTRY]}\n')
