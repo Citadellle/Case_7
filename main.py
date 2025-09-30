@@ -12,17 +12,17 @@ def search_urls_pages():
 
     :return url_list:
     """
-    link4 = input('Введите запрос: ')
+    link4 = input()
 
     url_list = []
-    url = LINK1+'0'+LINK3+link4
+    url = fr'{LINK1}0{LINK3}{link4}'
 
     r = requests.get(url)   
     soup = BeautifulSoup(r.text, 'html.parser')
     max_num_page = int(soup.find(class_='page-num page_last').text)
 
     for link2 in range(max_num_page):
-        url = LINK1+str(link2)+LINK3+link4
+        url = fr'{LINK1}{link2}{LINK3}{link4}'
         url_list.append(url)
 
     return url_list
