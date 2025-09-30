@@ -4,8 +4,19 @@ from ru_local import *
 
 
 def link():
-    LINK1 = 'https://obuv-tut2000.ru/magazin/search?p='
-    LINK3 = '&gr_smart_search=1&s[sort_by]=price%20asc&search_text='
+        """
+    creates a list containing links to all the necessary product pages
+    :param: link4 it is the fourth part of the link and stores the user's request
+    :type: link4 str
+    :param: link2 is the second part of the link and runs through several values
+    :type: link2 int
+    :param: url contains a ready-made link
+    :type: url str
+    :param: url_list contains a list of necessary links
+    :type: url_list list
+    :return url_list
+    """
+    
     link4 = input()
 
     url = fr'{LINK1}0{LINK3}{link4}'
