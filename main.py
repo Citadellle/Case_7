@@ -19,7 +19,10 @@ def search_urls_pages():
 
     r = requests.get(url)   
     soup = BeautifulSoup(r.text, 'html.parser')
-    max_num_page = int(soup.find(class_='page-num page_last').text)
+    try:
+        max_num_page = int(soup.find(class_='page-num page_last').text)
+    except:
+        max_num_page = 0
 
     for link2 in range(max_num_page):
         url = fr'{LINK1}{link2}{LINK3}{link4}'
