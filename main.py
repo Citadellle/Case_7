@@ -44,7 +44,7 @@ def search_urls_goods(url):
 
     info = soup.find_all(class_='gr-product-name')
     for i in info:
-        urls.append(i.find('a').get('href'))
+        urls.append('https://obuv-tut2000.ru'+(i.find('a').get('href')))
     
     return urls
 
