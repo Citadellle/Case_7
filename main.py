@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-from local import *
+from ru_local import *
 from const import *
 
 
