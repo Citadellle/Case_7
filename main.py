@@ -8,9 +8,13 @@ def link():
     link4 = input()
 
     url_list = []
-    for link2 in range(500):
+    url = fr'{LINK1}0{LINK3}{link4}'
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    soup = soup.find('li', class_='page-num page_last').text
+    for link2 in range(int(soup)):
         url = fr'{LINK1}{link2}{LINK3}{link4}'
+        print(r.status_code)
         url_list.append(url)
 
     return url_list
-  
