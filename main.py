@@ -12,6 +12,7 @@ def search_urls_pages():
 
     :return url_list:
     '''
+    
     link4 = input(USER_REQUEST)
 
     url_list = []
@@ -19,10 +20,12 @@ def search_urls_pages():
 
     r = requests.get(url)   
     soup = BeautifulSoup(r.text, 'html.parser')
-    try:
+
+    if soup.find(class_='page-num page_last') is not None:
         max_num_page = int(soup.find(class_='page-num page_last').text)
-    except:
-        max_num_page = 0
+    else:
+        max_num_page = int(soup.find(class_='page-next only_icons') \
+                           .previous_sibling.previous_sibling.text)
 
     for link2 in range(max_num_page):
         url = fr'{LINK1}{link2}{LINK3}{link4}'
@@ -88,13 +91,12 @@ def product_data(url):
         pass
 
     try:
-        if bs.find(class_='option-item sezon even') \
-            .find(class_='option-body').text.strip() is not None:
+        if bs.find(class_='option-item sezon even') is not None:
                 data[SEASON] = bs.find(class_='option-item sezon even') \
                     .find(class_='option-body').text.strip()
         else:
-                data[SEASON] = bs.find(class_='option-item sezon odd') \
-                    .find(class_='option-body').text.strip()             
+            data[SEASON] = bs.find(class_='option-item sezon odd') \
+                .find(class_='option-body').text.strip()             
     except:
         pass
 
@@ -136,7 +138,6 @@ def output(goods_data):
     
     with open('output.txt','w',encoding='utf-8') as catalog:
         for product in goods_data:
-            catalog.write(INDENT)
             catalog.write(product[NAME])
             catalog.write(f'\n{ARTICLE}: {product[ARTICLE]}\n')
             catalog.write(f'{VIEW}: {product[VIEW]}\n')
@@ -146,6 +147,7 @@ def output(goods_data):
             catalog.write(f'{COLOR}: {product[COLOR]}\n')
             catalog.write(f'{UP_MATERIAL}: {product[UP_MATERIAL]}\n')
             catalog.write(f'{COUNTRY}: {product[COUNTRY]}\n')
+            catalog.write(INDENT)
 
 
 def main():
@@ -163,6 +165,7 @@ def main():
     for url in tqdm(urls_goods):
         print(url)
         goods_data.append(product_data(url))
+    
     output(goods_data)
     
 
