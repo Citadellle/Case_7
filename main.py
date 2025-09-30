@@ -20,7 +20,7 @@ def link():
 
     return url_list
 
-def output(goods_data):
+def conclusion(goods_data):
     with open('output.txt','w',encoding='utf-8') as catalog:
         for product in goods_data:
             catalog.write(INDENT)
