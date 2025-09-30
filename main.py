@@ -44,7 +44,7 @@ def search_urls_goods(url):
 
     info = soup.find_all(class_='gr-product-name')
     for i in info:
-        urls.append('https://obuv-tut2000.ru'+(i.find('a').get('href')))
+        urls.append(LINK + (i.find('a').get('href')))
     
     return urls
 
@@ -147,8 +147,8 @@ def main():
     
     goods_data = []
     for url in tqdm(urls_goods):
-        print(LINK + url)
-        goods_data.append(product_data(LINK + url))
+        print(url)
+        goods_data.append(product_data(url))
     
     for i in goods_data:
         print(i)
