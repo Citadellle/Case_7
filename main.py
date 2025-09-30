@@ -1,37 +1,37 @@
 from bs4 import BeautifulSoup
 import requests
-from ru_local import *
+from local import *
+from const import *
 
 
 def link():
-        """
-    creates a list containing links to all the necessary product pages
-    :param: link4 it is the fourth part of the link and stores the user's request
-    :type: link4 str
-    :param: link2 is the second part of the link and runs through several values
-    :type: link2 int
-    :param: url contains a ready-made link
-    :type: url str
-    :param: url_list contains a list of necessary links
-    :type: url_list list
-    :return url_list
     """
-    
+    creates a list containing links to all the necessary product pages
+
+    :return url_list:
+    """
     link4 = input()
 
+    url_list = []
     url = fr'{LINK1}0{LINK3}{link4}'
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
     soup = soup.find('li', class_='page-num page_last').text
-
-    url_list = []
     for link2 in range(int(soup)):
         url = fr'{LINK1}{link2}{LINK3}{link4}'
+        print(r.status_code)
         url_list.append(url)
 
     return url_list
 
-def conclusion(goods_data):
+
+def output(goods_data):
+    """
+    the function displays product data in a separate file
+
+    :param goods_data: contains a list of product information in the form of dictionaries
+    :return:
+    """
     with open('output.txt','w',encoding='utf-8') as catalog:
         for product in goods_data:
             catalog.write(INDENT)
