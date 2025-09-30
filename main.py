@@ -6,13 +6,13 @@ from const import *
 
 
 def search_urls_pages():
-    """
+    '''
     creates a list containing links to all the necessary product pages
     use libraries, like 'requests', 'bs4', 'const'
 
     :return url_list:
-    """
-    link4 = input()
+    '''
+    link4 = input(USER_REQUEST)
 
     url_list = []
     url = fr'{LINK1}0{LINK3}{link4}'
@@ -40,7 +40,7 @@ def search_urls_goods(url):
     #creating list for collecting ways to url page's
     urls = []
     r = requests.get(url)
-    soup = BeautifulSoup(r.text, "html.parser")
+    soup = BeautifulSoup(r.text, 'html.parser')
 
     info = soup.find_all(class_='gr-product-name')
     for i in info:
@@ -51,13 +51,13 @@ def search_urls_goods(url):
 
 
 def product_data(url):
-    """
+    '''
     function for searching information of product
     use libraries, like 'requests', 'bs4'
 
     :param only url:
     :return dict:
-    """
+    '''
     
     page = requests.get(url)
     bs = BeautifulSoup(page.text, 'html.parser')
@@ -72,30 +72,42 @@ def product_data(url):
     data[NAME] = bs.find(class_='gr-product-name').text.strip()
 
     try:
-        data[VIEW] = bs.find(class_='shop2-product-params') \
-            .find_all(class_='param-item even')[4] \
-            .find(class_='param-body').text.strip()
+        if bs.find(class_='shop2-product-params') \
+            .find_all(class_='param-item even')[4] is not None:
+                data[VIEW] = bs.find(class_='shop2-product-params') \
+                    .find_all(class_='param-item even')[4] \
+                    .find(class_='param-body').text.strip()
+        else:
+                data[VIEW] = bs.find(class_='shop2-product-params') \
+                    .find_all(class_='param-item odd')[4] \
+                    .find(class_='param-body').text.strip()     
     except:
-        data[VIEW] = bs.find(class_='shop2-product-params') \
-            .find_all(class_='param-item odd')[4] \
-            .find(class_='param-body').text.strip()
+        pass
 
-    param_sezon = bs.find(class_='option-item sezon odd')
-    if param_sezon is not None:
-        data[SEASON] = param_sezon.find(class_='option-body').text.strip()
-    else:
-        data[SEASON] = bs.find(class_='option-item sezon even') \
-            .find(class_='option-body').text.strip()
+    try:
+        if bs.find(class_='option-item sezon even') \
+            .find(class_='option-body').text.strip() is not None:
+                data[SEASON] = bs.find(class_='option-item sezon even') \
+                    .find(class_='option-body').text.strip()
+        else:
+                data[SEASON] = bs.find(class_='option-item sezon odd') \
+                    .find(class_='option-body').text.strip()             
+    except:
+        pass
 
     data[PRICE] = bs.find(class_='product-price') \
         .find(class_='price-current').text.replace('\n', ' ').strip()
 
-    param_size = bs.find(class_='option-item razmery_v_korobke even')
-    if param_size is not None:
-        data[SIZES] = param_size.find(class_='option-body').text.strip()
-    else:
-        data[SIZES] = bs.find(class_='option-item razmery_v_korobke odd') \
-            .find(class_='option-body').text.strip()
+    try:
+        if bs.find(class_='option-item razmery_v_korobke even') \
+            .find(class_='option-body').text.strip() is not None:
+                data[SIZES] = bs.find(class_='option-item razmery_v_korobke even') \
+                    .find(class_='option-body').text.strip()
+        else:
+                data[SIZES] = bs.find(class_='option-item razmery_v_korobke odd') \
+            .find(class_='option-body').text.strip()             
+    except:
+        pass
 
     data[UP_MATERIAL] = bs.find(class_='option-item material_verha_960 odd') \
         .find(class_='option-body').text.strip()
@@ -103,9 +115,8 @@ def product_data(url):
     data[COLOR] = bs.find(class_='option-item cvet odd') \
         .find(class_='option-body').text.strip()
 
-    param_country = bs.find(class_='gr-vendor-block')
-    if param_country is not None:
-        data[COUNTRY] = param_country.text.strip()
+    if bs.find(class_='gr-vendor-block') is not None:
+        data[COUNTRY] = bs.find(class_='gr-vendor-block').text.strip()
     else:
         pass
 
@@ -113,12 +124,12 @@ def product_data(url):
 
 
 def output(goods_data):
-    """
+    '''
     the function displays product data in a separate file
 
     :param goods_data: contains a list of product information in the form of dictionaries
     :return:
-    """
+    '''
     
     with open('output.txt','w',encoding='utf-8') as catalog:
         for product in goods_data:
