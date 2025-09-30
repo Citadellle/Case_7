@@ -10,16 +10,17 @@ def link():
 
     :return url_list:
     """
+    
     link4 = input()
 
-    url_list = []
     url = fr'{LINK1}0{LINK3}{link4}'
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
     soup = soup.find('li', class_='page-num page_last').text
+
+    url_list = []
     for link2 in range(int(soup)):
         url = fr'{LINK1}{link2}{LINK3}{link4}'
-        print(r.status_code)
         url_list.append(url)
 
     return url_list
@@ -32,6 +33,7 @@ def output(goods_data):
     :param goods_data: contains a list of product information in the form of dictionaries
     :return:
     """
+    
     with open('output.txt','w',encoding='utf-8') as catalog:
         for product in goods_data:
             catalog.write(INDENT)
