@@ -51,62 +51,61 @@ def search_urls_goods(url):
 
 
 def product_data(url):
-    '''
+    """
     function for searching information of product
     use libraries, like 'requests', 'bs4'
 
     :param only url:
     :return dict:
-    '''
+    """
+    
     page = requests.get(url)
     bs = BeautifulSoup(page.text, 'html.parser')
 
-
-    keys = ['артикул', 'наименование', 'вид обуви',
-            'сезон', 'цена', 'размеры', 'материал верха',
-            'цвет', 'страна производитель']
+    keys = [ARTICLE, NAME, VIEW,
+            SEASON, PRICE, SIZES, UP_MATERIAL,
+            COLOR, COUNTRY]
     data = dict.fromkeys(keys, '')
-    
 
-    data['артикул'] = bs.find(class_='shop2-product-article').find('span').next_sibling.strip()
+    data[ARTICLE] = bs.find(class_='shop2-product-article').find('span').next_sibling.strip()
 
-    data['наименование'] = bs.find(class_='gr-product-name').text.strip()
+    data[NAME] = bs.find(class_='gr-product-name').text.strip()
 
     try:
-        data['вид обуви'] = bs.find(class_='shop2-product-params') \
+        data[VIEW] = bs.find(class_='shop2-product-params') \
             .find_all(class_='param-item even')[4] \
             .find(class_='param-body').text.strip()
     except:
-        data['вид обуви'] = bs.find(class_='shop2-product-params') \
+        data[VIEW] = bs.find(class_='shop2-product-params') \
             .find_all(class_='param-item odd')[4] \
             .find(class_='param-body').text.strip()
 
     param_sezon = bs.find(class_='option-item sezon odd')
     if param_sezon is not None:
-        data['сезон'] = param_sezon.find(class_='option-body').text.strip()
+        data[SEASON] = param_sezon.find(class_='option-body').text.strip()
     else:
-        data['сезон'] = bs.find(class_='option-item sezon even') \
+        data[SEASON] = bs.find(class_='option-item sezon even') \
             .find(class_='option-body').text.strip()
-    
-    data['цена'] = bs.find(class_='product-price') \
+
+    data[PRICE] = bs.find(class_='product-price') \
         .find(class_='price-current').text.replace('\n', ' ').strip()
 
     param_size = bs.find(class_='option-item razmery_v_korobke even')
     if param_size is not None:
-        data['размеры'] =  param_size.find(class_='option-body').text.strip()
+        data[SIZES] = param_size.find(class_='option-body').text.strip()
     else:
-        data['размеры'] =  bs.find(class_='option-item razmery_v_korobke odd') \
+        data[SIZES] = bs.find(class_='option-item razmery_v_korobke odd') \
             .find(class_='option-body').text.strip()
 
-    data['материал верха'] = bs.find(class_='option-item material_verha_960 odd') \
+    data[UP_MATERIAL] = bs.find(class_='option-item material_verha_960 odd') \
         .find(class_='option-body').text.strip()
 
-    data['цвет'] = bs.find(class_='option-item cvet odd') \
+    data[COLOR] = bs.find(class_='option-item cvet odd') \
         .find(class_='option-body').text.strip()
 
     param_country = bs.find(class_='gr-vendor-block')
     if param_country is not None:
-        data['страна производитель'] = param_country.text.strip()
+        data[COUNTRY] = param_country.text.strip()
     else:
         pass
 
