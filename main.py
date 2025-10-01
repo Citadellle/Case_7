@@ -27,8 +27,7 @@ def search_urls_pages():
     if soup.find(class_='page-num page_last') is not None:
         max_num_page = int(soup.find(class_='page-num page_last').text)
     else:
-        max_num_page = int(soup.find(class_='page-next only_icons') \
-                           .previous_sibling.previous_sibling.text)
+        max_num_page = 0
 
     for link2 in range(max_num_page):
         url = fr'{LINK1}{link2}{LINK3}{link4}'
