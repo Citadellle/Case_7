@@ -78,15 +78,8 @@ def product_data(url):
     data[NAME] = bs.find(class_='gr-product-name').text.strip()
 
     try:
-        if bs.find(class_='shop2-product-params') \
-            .find_all(class_='param-item even')[4] is not None:
-                data[VIEW] = bs.find(class_='shop2-product-params') \
-                    .find_all(class_='param-item even')[4] \
-                    .find(class_='param-body').text.strip()
-        else:
-                data[VIEW] = bs.find(class_='shop2-product-params') \
-                    .find_all(class_='param-item odd')[4] \
-                    .find(class_='param-body').text.strip()     
+        data[VIEW] = bs.find(class_='shop2-product-params') \
+            .find_all(class_='param-body')[-1].text
     except:
         pass
 
